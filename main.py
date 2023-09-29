@@ -23,12 +23,17 @@ data = db.cursor()
 # data.execute("UPDATE drivers SET season = 2023 WHERE number > 0")
 # db.commit()
 
+data.execute("SELECT name FROM drivers WHERE number = 16")
+name = data.fetchone()[0]
+print(name)
+
+data.reset()
+
 data.execute("SELECT * FROM drivers WHERE number = 3 ORDER BY name DESC")
 
 # Fetches specific values from previous statement ALSO pops the first array
-i = data.fetchone()[0]
-
-print(i)
+name = data.fetchone()[0]
+print(name)
 
 for x in data:
     print(x)
