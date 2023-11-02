@@ -24,7 +24,7 @@ rround = fetched[4]
 data.reset()
 
 # System Settings
-ctk.set_appearance_mode("System")
+ctk.set_appearance_mode("DARK")
 ctk.set_default_color_theme("blue")
 
 # App Frame
