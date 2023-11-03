@@ -13,14 +13,15 @@ db = mysql.connector.connect(
 # Database Queries
 data = db.cursor()
 
-query = "SELECT r.country, r.track, r.laps, r.season, r.round FROM races r WHERE r.season = %s AND r.round = 18 ORDER BY date DESC"
+query = ("SELECT r.country, r.track, r.laps, r.season, r.round FROM races r WHERE r.season = %s AND r.round = 18 ORDER "
+         "BY date DESC")
 data.execute(query, (date.today().year,))
 fetched = data.fetchone()
-country = fetched[0]
-track = fetched[1]
-laps = fetched[2]
-season = fetched[3]
-rround = fetched[4]
+countryT = fetched[0]
+trackT = fetched[1]
+lapsT = fetched[2]
+seasonT = fetched[3]
+roundT = fetched[4]
 data.reset()
 
 query = "SELECT r.status, d.name " \
@@ -29,7 +30,7 @@ query = "SELECT r.status, d.name " \
         "JOIN races ra ON r.season = ra.season AND r.round = ra.round " \
         "WHERE r.season = %s AND r.round = 18 " \
         "ORDER BY r.season, r.round, r.result"
-data.execute(query, (season,))
+data.execute(query, (seasonT,))
 
 
 # System Settings
@@ -66,13 +67,13 @@ segmented_button = ctk.CTkSegmentedButton(button_container, values=["Leaderboard
 segmented_button.set("Leaderboards")
 segmented_button.pack(pady=5)
 
-countryL = ctk.CTkLabel(app, text=country, font=("Lucidia Sans", 25))
+countryL = ctk.CTkLabel(app, text=countryT, font=("Lucidia Sans", 25))
 countryL.grid(row=1, column=0, sticky="nw", padx=20, pady=10)
 
-trackL = ctk.CTkLabel(app, text=track, font=("Lucidia Sans", 20))
+trackL = ctk.CTkLabel(app, text=trackT, font=("Lucidia Sans", 20))
 trackL.grid(row=2, column=0, sticky="nw", padx=20)
 
-lapsL = ctk.CTkLabel(app, text=f"Laps: {laps}", font=("Lucidia Sans", 20))
+lapsL = ctk.CTkLabel(app, text=f"Laps: {lapsT}", font=("Lucidia Sans", 20))
 lapsL.grid(row=1, column=1, sticky="ne", columnspan=3, padx=20, pady=10)
 
 ptsL = ctk.CTkLabel(app, text="Pts.", font=("Lucidia Sans", 20))
