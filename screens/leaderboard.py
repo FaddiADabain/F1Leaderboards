@@ -23,15 +23,14 @@ season = fetched[3]
 rround = fetched[4]
 data.reset()
 
-query = "SELECT d.name " \
+query = "SELECT r.status, d.name " \
         "FROM results r " \
         "JOIN drivers d ON r.number = d.number AND r.season = d.season " \
         "JOIN races ra ON r.season = ra.season AND r.round = ra.round " \
         "WHERE r.season = %s AND r.round = 18 " \
         "ORDER BY r.season, r.round, r.result"
 data.execute(query, (season,))
-leader = data.fetchone()[0]
-data.reset()
+
 
 # System Settings
 ctk.set_appearance_mode("DARK")
@@ -82,8 +81,16 @@ ptsL.grid(row=2, column=1, sticky="ne", columnspan=3, padx=20)
 scrollable_frame = ctk.CTkScrollableFrame(app, width=720, height=200)
 scrollable_frame.grid(row=3, column=0, columnspan=3, pady=10, sticky="nsew")
 
-leader = ctk.CTkLabel(scrollable_frame, text=leader, font=("Lucidia Sans", 17))
-leader.grid(row=0, column=0, sticky="nw", padx=20, pady=20)
+for i in range(20):
+    leader = data.fetchone()
+    resultT = leader[0]
+    leaderT = leader[1]
+
+    resultL = ctk.CTkLabel(scrollable_frame, text=resultT, font=("Lucidia Sans", 17))
+    resultL.grid(row=i, column=0, sticky="nw", padx=20, pady=10)
+
+    leaderL = ctk.CTkLabel(scrollable_frame, text=leaderT, font=("Lucidia Sans", 17))
+    leaderL.grid(row=i, column=1, sticky="nw", padx=20, pady=10)
 
 # Main Loop
 app.mainloop()
