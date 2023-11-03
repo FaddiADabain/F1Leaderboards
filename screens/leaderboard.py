@@ -86,11 +86,41 @@ for i in range(20):
     resultT = leader[0]
     leaderT = leader[1]
 
+    if resultT == "1":
+        ptsT = "25"
+    elif resultT == "2":
+        ptsT = "18"
+    elif resultT == "3":
+        ptsT = "15"
+    elif resultT == "4":
+        ptsT = "12"
+    elif resultT == "5":
+        ptsT = "10"
+    elif resultT == "6":
+        ptsT = "8"
+    elif resultT == "7":
+        ptsT = "6"
+    elif resultT == "8":
+        ptsT = "4"
+    elif resultT == "9":
+        ptsT = "2"
+    elif resultT == "10":
+        ptsT = "1"
+    else:
+        ptsT = "0"
+
+    scrollable_frame.grid_columnconfigure(0, weight=1)
+    scrollable_frame.grid_columnconfigure(1, weight=1)
+    scrollable_frame.grid_columnconfigure(2, weight=1)
+
     resultL = ctk.CTkLabel(scrollable_frame, text=resultT, font=("Lucidia Sans", 17))
     resultL.grid(row=i, column=0, sticky="nw", padx=20, pady=10)
 
     leaderL = ctk.CTkLabel(scrollable_frame, text=leaderT, font=("Lucidia Sans", 17))
     leaderL.grid(row=i, column=1, sticky="nw", padx=20, pady=10)
+
+    ptsL = ctk.CTkLabel(scrollable_frame, text=ptsT, font=("Lucidia Sans", 17))
+    ptsL.grid(row=i, column=2, sticky="e", padx=20, pady=10)
 
 # Main Loop
 app.mainloop()
