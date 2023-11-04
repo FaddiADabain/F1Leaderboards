@@ -13,7 +13,7 @@ db = mysql.connector.connect(
 # Database Queries
 data = db.cursor()
 
-query = ("SELECT r.country, r.track, r.laps, r.season, r.round FROM races r WHERE r.season = %s AND r.round = 18 ORDER "
+query = ("SELECT r.country, r.track, r.laps, r.season, r.round FROM races r WHERE r.season = %s AND r.round = 19 ORDER "
          "BY date DESC")
 data.execute(query, (date.today().year,))
 fetched = data.fetchone()
@@ -24,11 +24,11 @@ seasonT = fetched[3]
 roundT = fetched[4]
 data.reset()
 
-query = "SELECT r.status, d.name " \
+query = "SELECT r.status, d.name, r.points " \
         "FROM results r " \
         "JOIN drivers d ON r.number = d.number AND r.season = d.season " \
         "JOIN races ra ON r.season = ra.season AND r.round = ra.round " \
-        "WHERE r.season = %s AND r.round = 18 " \
+        "WHERE r.season = %s AND r.round = 19 " \
         "ORDER BY r.season, r.round, r.result"
 data.execute(query, (seasonT,))
 
@@ -86,29 +86,10 @@ for i in range(20):
     leader = data.fetchone()
     resultT = leader[0]
     leaderT = leader[1]
+    ptsT = leader[2]  # Keep the points as they are, without rounding
 
-    if resultT == "1":
-        ptsT = "25"
-    elif resultT == "2":
-        ptsT = "18"
-    elif resultT == "3":
-        ptsT = "15"
-    elif resultT == "4":
-        ptsT = "12"
-    elif resultT == "5":
-        ptsT = "10"
-    elif resultT == "6":
-        ptsT = "8"
-    elif resultT == "7":
-        ptsT = "6"
-    elif resultT == "8":
-        ptsT = "4"
-    elif resultT == "9":
-        ptsT = "2"
-    elif resultT == "10":
-        ptsT = "1"
-    else:
-        ptsT = "0"
+    # Check if ptsT is an integer value, and if so, cast to int. Otherwise, keep it as a float.
+    ptsT_formatted = str(int(ptsT)) if ptsT.is_integer() else str(ptsT)
 
     scrollable_frame.grid_columnconfigure(0, weight=1)
     scrollable_frame.grid_columnconfigure(1, weight=1)
@@ -120,7 +101,7 @@ for i in range(20):
     leaderL = ctk.CTkLabel(scrollable_frame, text=leaderT, font=("Lucidia Sans", 17))
     leaderL.grid(row=i, column=1, sticky="nw", padx=20, pady=10)
 
-    ptsL = ctk.CTkLabel(scrollable_frame, text=ptsT, font=("Lucidia Sans", 17))
+    ptsL = ctk.CTkLabel(scrollable_frame, text=ptsT_formatted, font=("Lucidia Sans", 17))
     ptsL.grid(row=i, column=2, sticky="e", padx=20, pady=10)
 
 # Main Loop
