@@ -1,5 +1,4 @@
 import customtkinter as ctk
-import sqlite3
 from datetime import date
 
 
@@ -64,7 +63,7 @@ class Leaderboard(ctk.CTkFrame):
             f"SELECT r.country, r.track, r.laps, r.season, r.round FROM races r WHERE r.season = {date.today().year} AND r.round = 19 ORDER "
             "BY date DESC")
         self.data.execute(query)
-        fetched =  self.data.fetchone()
+        fetched = self.data.fetchone()
 
         self.countryT = fetched[0]
         self.trackT = fetched[1]
