@@ -34,6 +34,8 @@ class ColoredLine(Canvas):
 class Strategies(ctk.CTkFrame):
     def __init__(self, parent, controller, db):
         super().__init__(parent)
+        self.fetched = None
+        self.result = None
         self.trackT = None
         self.lapsL = None
         self.trackL = None
@@ -84,13 +86,14 @@ class Strategies(ctk.CTkFrame):
         self.trackT = fetched[1]
         self.lapsT = str(int(fetched[2]))
         seasonT = fetched[3]
-        roundT = fetched[4] - 1
+        roundT = fetched[4]
 
         query = ("SELECT d.name, s.tirestat FROM drivers d JOIN strategies s ON d.number = s.number AND d.season = "
                  "s.season JOIN results r ON d.number = r.number AND d.season = r.season AND s.round = r.round "
                  f"WHERE d.season = {seasonT} AND r.round = {roundT} "
                  "ORDER BY r.result")
         self.data.execute(query)
+        self.fetched = self.data.fetchall()
 
     def fill(self):
         self.countryL.configure(text=self.countryT)
@@ -102,16 +105,20 @@ class Strategies(ctk.CTkFrame):
 
         self.get_line_data()
 
-        for i, segments in enumerate(self.result):
+        index = 0
+        for name, segments in zip(self.fetched, self.result):
+            leaderL = ctk.CTkLabel(self.scrollable_frame, text=name[0], font=("Lucidia Sans", 17))
+            leaderL.pack(padx=20, pady=10)
+
             colored_line = ColoredLine(self.scrollable_frame, segments=segments,
                                        width=self.scrollable_frame.winfo_width())
             colored_line.pack(fill='x', expand=True, pady=5)
+            index += 1
 
     def get_line_data(self):
-        self.load_data(self.controller.race_menu.get())
         self.result = []
 
-        for index, item in enumerate(self.data):
+        for index, item in enumerate(self.fetched):
             # Define the mapping of codes to color names
             color_map = {
                 'm': 'yellow',

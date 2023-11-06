@@ -106,12 +106,14 @@ class MainApplication(ctk.CTk):
         if (selected_value == "Leaderboards" or selected_value == "Race Penalties"
                 or selected_value == "Tyre Strategies"):
             self.race_menu_vals(self.season_menu.get())
+            self.race_menu.set("Bahrain")
         if selected_value == "Standings":
             self.race_menu.configure(values=("Drivers' Championship", "Constructors' Championship"))
             self.race_menu.set("Drivers' Championship")
 
     def season_menu_callback(self, selected_value):
-        if self.segmented_buttons.get() == "Leaderboards" or self.segmented_buttons.get() == "Race Penalties":
+        if (self.segmented_buttons.get() == "Leaderboards" or self.segmented_buttons.get() == "Race Penalties"
+                or self.segmented_buttons.get() == "Tyre Strategies"):
             self.countries.clear()
             self.data.execute(f"SELECT track, date FROM races WHERE season = {str(selected_value)} ORDER BY round")
 
@@ -134,12 +136,16 @@ class MainApplication(ctk.CTk):
             self.standingsF.fill()
 
     def race_menu_callback(self, selected_value):
-        if self.segmented_buttons.get() == "Leaderboards" or self.segmented_buttons.get() == "Race Penalties":
+        if (self.segmented_buttons.get() == "Leaderboards" or self.segmented_buttons.get() == "Race Penalties"
+                or self.segmented_buttons.get() == "Tyre Strategies"):
             self.leaderboardF.load_data(selected_value, season=self.season_menu.get())
             self.leaderboardF.fill_leader()
 
             self.penaltiesF.load_data(selected_value, season=self.season_menu.get())
             self.penaltiesF.fill_penalties()
+
+            self.strategiesF.load_data(selected_value, season=self.season_menu.get())
+            self.strategiesF.fill()
 
         elif selected_value == "Drivers' Championship":
             self.standingsF.load_data("drivers", season=self.season_menu.get())
