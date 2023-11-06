@@ -9,6 +9,9 @@ class MainApplication(ctk.CTk):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.data = None
+        self.db = None
+        self.countries = {}
         self.init_db()
         self.after(100, lambda: self.state("zoomed"))
         self.iconbitmap("data/logo.ico")
@@ -130,6 +133,7 @@ class MainApplication(ctk.CTk):
                 if latest < i:
                     self.race_menu.set(self.countries[i])
                     break
+
 
 def main():
     app = MainApplication()
