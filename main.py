@@ -58,13 +58,13 @@ class MainApplication(ctk.CTk):
         self.leaderboardF = Leaderboard(self.container, self, self.data)
         self.penaltiesF = Penalties(self.container, self, self.data)
         self.standingsF = Standings(self.container, self, self.data)
-        #self.strategiesF = Strategies(self.container, self, self.data)
+        self.strategiesF = Strategies(self.container, self, self.data)
 
         self.frames = {
             "Leaderboards": self.leaderboardF,
             "Race Penalties": self.penaltiesF,
-            "Standings": self.standingsF
-            #"Tyre Strategies": self.strategiesF
+            "Standings": self.standingsF,
+            "Tyre Strategies": self.strategiesF
         }
 
         # Add frames to the application
