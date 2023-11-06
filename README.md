@@ -10,11 +10,6 @@ The "F1 Leaderboard Database" is a platform designed to provide users with a det
 ## Watch how this works!
 
 ## Prerequisites
-- MySQL Connector
-```
-pip install mysql-connector-python
-```
-
 - Packaging (required by cumsomtkinter)
 ```
 pip install packaging
@@ -23,11 +18,6 @@ pip install packaging
 - CustomTKinter
 ```
 pip install customtkinter
-```
-
-- TKinter
-```
-pip install tkinter
 ```
 
 ## How to install
