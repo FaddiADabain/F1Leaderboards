@@ -3,6 +3,7 @@ import sqlite3
 from datetime import date
 from screens.leaderboard import Leaderboard
 from screens.penalties import Penalties
+from screens.standings import Standings
 
 
 class MainApplication(ctk.CTk):
@@ -54,10 +55,12 @@ class MainApplication(ctk.CTk):
 
         self.leaderboardF = Leaderboard(self.container, self, self.data)
         self.penaltiesF = Penalties(self.container, self, self.data)
+        self.standingsF = Standings(self.container, self, self.data)
 
         self.frames = {
             "Leaderboards": self.leaderboardF,
-            "Race Penalties": self.penaltiesF
+            "Race Penalties": self.penaltiesF,
+            "Standings": self.standingsF
         }
 
         # Add frames to the application
@@ -96,26 +99,50 @@ class MainApplication(ctk.CTk):
         # Show the selected frame
         self.show_frame(selected_value)
 
+        if selected_value == "Leaderboards" or "Race Penalties":
+            self.race_menu_vals(self.season_menu.get())
+        if selected_value == "Standings":
+            self.race_menu.configure(values=("Drivers' Championship", "Constructors' Championship"))
+            self.race_menu.set("Drivers' Championship")
+
     def season_menu_callback(self, selected_value):
-        self.countries.clear()
-        self.data.execute(f"SELECT track, date FROM races WHERE season = {str(selected_value)} ORDER BY round")
+        if self.segmented_buttons.get() == "Leaderboards" or self.segmented_buttons.get() == "Race Penalties":
+            self.countries.clear()
+            self.data.execute(f"SELECT track, date FROM races WHERE season = {str(selected_value)} ORDER BY round")
 
-        for i in self.data:
-            self.countries[i[1]] = i[0]
+            for i in self.data:
+                self.countries[i[1]] = i[0]
 
-        self.race_menu.configure(values=list(self.countries.values()))
-        self.race_menu.set(self.countries[list(self.countries.keys())[0]])
+            self.race_menu.configure(values=list(self.countries.values()))
+            self.race_menu.set(self.countries[list(self.countries.keys())[0]])
 
-        self.race_menu_callback(self.race_menu.get())
+            self.race_menu_callback(self.race_menu.get())
 
-        self.segmented_button_callback(self.segmented_buttons.get())
+            self.segmented_button_callback(self.segmented_buttons.get())
+
+        elif self.segmented_buttons.get() == "Standings" and self.race_menu.get() == "Drivers' Championship":
+            self.standingsF.load_data("drivers", season=selected_value)
+            self.standingsF.fill()
+
+        elif self.segmented_buttons.get() == "Standings" and self.race_menu.get() == "Constructors' Championship":
+            self.standingsF.load_data("teams", season=selected_value)
+            self.standingsF.fill()
 
     def race_menu_callback(self, selected_value):
-        self.leaderboardF.load_data(selected_value, season=self.season_menu.get())
-        self.leaderboardF.fill_leader()
+        if self.segmented_buttons.get() == "Leaderboards" or self.segmented_buttons.get() == "Race Penalties":
+            self.leaderboardF.load_data(selected_value, season=self.season_menu.get())
+            self.leaderboardF.fill_leader()
 
-        self.penaltiesF.load_data(selected_value, season=self.season_menu.get())
-        self.penaltiesF.fill_penalties()
+            self.penaltiesF.load_data(selected_value, season=self.season_menu.get())
+            self.penaltiesF.fill_penalties()
+
+        elif selected_value == "Drivers' Championship":
+            self.standingsF.load_data("drivers", season=self.season_menu.get())
+            self.standingsF.fill()
+
+        elif selected_value == "Constructors' Championship":
+            self.standingsF.load_data("teams", season=self.season_menu.get())
+            self.standingsF.fill()
 
     def race_menu_vals(self, season):
         self.countries = {}
@@ -127,7 +154,7 @@ class MainApplication(ctk.CTk):
         self.race_menu.configure(values=list(self.countries.values()))
 
         today = str(date.today())
-        if self.countries[today]:
+        if today in self.countries:
             self.race_menu.set(self.countries[today])
         else:
             latest = today
