@@ -7,7 +7,7 @@ class Penalties(ctk.CTkFrame):
         super().__init__(parent)
         self.controller = controller
         self.data = db
-        self.load_data()
+        self.load_data(self.controller.race_menu.get())
         self.setup_ui()
 
     def setup_ui(self):
@@ -64,11 +64,11 @@ class Penalties(ctk.CTkFrame):
             self.penalties = self.data.fetchone()
             i += 1
 
-    def load_data(self):
+    def load_data(self, race, season=date.today().year):
         query = (
-            f'SELECT r.country, r.track, r.laps, r.season, r.round FROM races r WHERE r.season = {date.today().year} AND r.round = 19 '
-            'ORDER BY date DESC')
-        self.data.execute(query)
+            f"SELECT r.country, r.track, r.laps, r.season, r.round FROM races r WHERE r.season = {season} AND r.track ="
+            "? ORDER BY date DESC")
+        self.data.execute(query, (race,))
         fetched = self.data.fetchone()
 
         self.countryT = fetched[0]
@@ -76,8 +76,6 @@ class Penalties(ctk.CTkFrame):
         self.lapsT = str(int(fetched[2]))
         seasonT = fetched[3]
         roundT = fetched[4]
-
-        self.data.fetchall()
 
         query = ("SELECT d.name, p.session, p.offence, p.decision "
                  "FROM drivers d "

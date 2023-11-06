@@ -107,13 +107,8 @@ class MainApplication(ctk.CTk):
         self.race_menu.set(self.countries[list(self.countries.keys())[0]])
 
     def race_menu_callback(self, selected_value):
-        self.countries = {}
-        self.data.execute(f"SELECT track, date FROM races WHERE season = {self.season_menu.get()} ORDER BY round")
-
-        for i in self.data:
-            self.countries[i[1]] = i[0]
-
-        self.race_menu.configure(values=list(self.countries.values()))
+        self.leaderboardF.load_data(selected_value, season=self.season_menu.get())
+        self.leaderboardF.fill_leader()
 
     def race_menu_vals(self, season):
         self.countries = {}
