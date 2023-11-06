@@ -114,6 +114,9 @@ class MainApplication(ctk.CTk):
         self.leaderboardF.load_data(selected_value, season=self.season_menu.get())
         self.leaderboardF.fill_leader()
 
+        self.penaltiesF.load_data(selected_value, season=self.season_menu.get())
+        self.penaltiesF.fill_penalties()
+
     def race_menu_vals(self, season):
         self.countries = {}
         self.data.execute(f"SELECT track, date FROM races WHERE season = {season} ORDER BY round")

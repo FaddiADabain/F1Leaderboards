@@ -26,43 +26,52 @@ class Penalties(ctk.CTkFrame):
 
         # UI Elements
 
-        countryL = ctk.CTkLabel(self, text=self.countryT, font=("Lucidia Sans", 25))
-        countryL.grid(row=1, column=1, sticky="nw", padx=20, pady=10)
+        self.countryL = ctk.CTkLabel(self, text=self.countryT, font=("Lucidia Sans", 25))
+        self.countryL.grid(row=1, column=1, sticky="nw", padx=20, pady=10)
 
-        trackL = ctk.CTkLabel(self, text=self.trackT, font=("Lucidia Sans", 20))
-        trackL.grid(row=2, column=1, sticky="nw", padx=20)
+        self.trackL = ctk.CTkLabel(self, text=self.trackT, font=("Lucidia Sans", 20))
+        self.trackL.grid(row=2, column=1, sticky="nw", padx=20)
 
-        lapsL = ctk.CTkLabel(self, text=f"Laps: {self.lapsT}", font=("Lucidia Sans", 20))
-        lapsL.grid(row=1, column=2, sticky="ne", columnspan=3, padx=20, pady=10)
+        self.lapsL = ctk.CTkLabel(self, text=f"Laps: {self.lapsT}", font=("Lucidia Sans", 20))
+        self.lapsL.grid(row=1, column=2, sticky="ne", columnspan=3, padx=20, pady=10)
 
         ptsL = ctk.CTkLabel(self, text="Pts.", font=("Lucidia Sans", 20))
         ptsL.grid(row=2, column=2, sticky="ne", columnspan=3, padx=20)
 
-        scrollable_frame = ctk.CTkScrollableFrame(self, width=720, height=200)
-        scrollable_frame.grid(row=3, column=1, columnspan=3, pady=10, sticky="nsew")
+        self.scrollable_frame = ctk.CTkScrollableFrame(self, width=720, height=200)
+        self.scrollable_frame.grid(row=3, column=1, columnspan=3, pady=10, sticky="nsew")
+
+        self.fill_penalties()
+
+    def fill_penalties(self):
+        self.countryL.configure(text=self.countryT)
+        self.trackL.configure(text=self.trackT)
+        self.lapsL.configure(text=f"Laps: {self.lapsT}")
+
+        for widget in self.scrollable_frame.winfo_children():
+            widget.destroy()
 
         i = 0
-
         while self.penalties:
             nameT = self.penalties[0]
             sessionT = self.penalties[1]
             offenceT = self.penalties[2]
             decisionT = self.penalties[3]
 
-            scrollable_frame.grid_columnconfigure(0, weight=1)
-            scrollable_frame.grid_columnconfigure(1, weight=1)
-            scrollable_frame.grid_columnconfigure(2, weight=1)
+            self.scrollable_frame.grid_columnconfigure(0, weight=1)
+            self.scrollable_frame.grid_columnconfigure(1, weight=1)
+            self.scrollable_frame.grid_columnconfigure(2, weight=1)
 
-            nameL = ctk.CTkLabel(scrollable_frame, text=nameT, font=("Lucidia Sans", 17))
+            nameL = ctk.CTkLabel(self.scrollable_frame, text=nameT, font=("Lucidia Sans", 17))
             nameL.grid(row=i, column=0, sticky="nw", padx=20, pady=10)
 
-            sessionL = ctk.CTkLabel(scrollable_frame, text=sessionT, font=("Lucidia Sans", 17))
+            sessionL = ctk.CTkLabel(self.scrollable_frame, text=sessionT, font=("Lucidia Sans", 17))
             sessionL.grid(row=i, column=1, sticky="nw", padx=20, pady=10)
 
-            offenceL = ctk.CTkLabel(scrollable_frame, text=offenceT, font=("Lucidia Sans", 17))
+            offenceL = ctk.CTkLabel(self.scrollable_frame, text=offenceT, font=("Lucidia Sans", 17))
             offenceL.grid(row=i, column=2, sticky="nw", padx=20, pady=10)
 
-            decisionL = ctk.CTkLabel(scrollable_frame, text=decisionT, font=("Lucidia Sans", 17))
+            decisionL = ctk.CTkLabel(self.scrollable_frame, text=decisionT, font=("Lucidia Sans", 17))
             decisionL.grid(row=i, column=3, sticky="nw", padx=20, pady=10)
 
             self.penalties = self.data.fetchone()
