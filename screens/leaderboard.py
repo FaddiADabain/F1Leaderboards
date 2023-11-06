@@ -5,6 +5,13 @@ from datetime import date
 class Leaderboard(ctk.CTkFrame):
     def __init__(self, parent, controller, db):
         super().__init__(parent)
+        self.lapsT = None
+        self.trackT = None
+        self.countryT = None
+        self.ptsL = None
+        self.lapsL = None
+        self.trackL = None
+        self.countryL = None
         self.scrollable_frame = None
         self.controller = controller
         self.data = db

@@ -5,6 +5,10 @@ from datetime import date
 class Penalties(ctk.CTkFrame):
     def __init__(self, parent, controller, db):
         super().__init__(parent)
+        self.penalties = None
+        self.lapsT = None
+        self.trackT = None
+        self.countryT = None
         self.controller = controller
         self.data = db
         self.load_data(self.controller.race_menu.get())
