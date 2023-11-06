@@ -4,6 +4,7 @@ from datetime import date
 from screens.leaderboard import Leaderboard
 from screens.penalties import Penalties
 from screens.standings import Standings
+from screens.tyrestrats import Strategies
 
 
 class MainApplication(ctk.CTk):
@@ -56,11 +57,13 @@ class MainApplication(ctk.CTk):
         self.leaderboardF = Leaderboard(self.container, self, self.data)
         self.penaltiesF = Penalties(self.container, self, self.data)
         self.standingsF = Standings(self.container, self, self.data)
+        self.strategiesF = Strategies(self.container, self, self.data)
 
         self.frames = {
             "Leaderboards": self.leaderboardF,
             "Race Penalties": self.penaltiesF,
-            "Standings": self.standingsF
+            "Standings": self.standingsF,
+            "Tyre Strategies": self.strategiesF
         }
 
         # Add frames to the application
@@ -99,7 +102,8 @@ class MainApplication(ctk.CTk):
         # Show the selected frame
         self.show_frame(selected_value)
 
-        if selected_value == "Leaderboards" or "Race Penalties":
+        if (selected_value == "Leaderboards" or selected_value == "Race Penalties"
+                or selected_value == "Tyre Strategies"):
             self.race_menu_vals(self.season_menu.get())
         if selected_value == "Standings":
             self.race_menu.configure(values=("Drivers' Championship", "Constructors' Championship"))

@@ -5,6 +5,7 @@ from datetime import date
 class Standings(ctk.CTkFrame):
     def __init__(self, parent, controller, db):
         super().__init__(parent)
+        self.scrollable_frame = None
         self.controller = controller
         self.data = db
         self.load_data("drivers")
