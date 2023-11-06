@@ -5,6 +5,7 @@ from screens.leaderboard import Leaderboard
 from screens.penalties import Penalties
 from screens.standings import Standings
 from screens.tyrestrats import Strategies
+from collections import OrderedDict
 
 
 class MainApplication(ctk.CTk):
@@ -46,7 +47,7 @@ class MainApplication(ctk.CTk):
                                            command=self.race_menu_callback, button_color="grey", fg_color="grey",
                                            text_color="black", font=("Lucidia Sans", 15))
         self.race_menu.pack(side="left", padx=10)
-        self.race_menu_vals(self.season_menu.get())
+        self.race_menu_init()
 
         self.frames = {}
         self.container = ctk.CTkFrame(self)
@@ -57,13 +58,13 @@ class MainApplication(ctk.CTk):
         self.leaderboardF = Leaderboard(self.container, self, self.data)
         self.penaltiesF = Penalties(self.container, self, self.data)
         self.standingsF = Standings(self.container, self, self.data)
-        self.strategiesF = Strategies(self.container, self, self.data)
+        #self.strategiesF = Strategies(self.container, self, self.data)
 
         self.frames = {
             "Leaderboards": self.leaderboardF,
             "Race Penalties": self.penaltiesF,
-            "Standings": self.standingsF,
-            "Tyre Strategies": self.strategiesF
+            "Standings": self.standingsF
+            #"Tyre Strategies": self.strategiesF
         }
 
         # Add frames to the application
@@ -148,6 +149,19 @@ class MainApplication(ctk.CTk):
             self.standingsF.load_data("teams", season=self.season_menu.get())
             self.standingsF.fill()
 
+    def race_menu_init(self):
+        self.race_menu_vals(2023)
+
+        today = str(date.today())
+        if today in self.countries:
+            self.race_menu.set(self.countries[today])
+        else:
+            reversed_dict = OrderedDict(sorted(self.countries.items(), reverse=True))
+            for i in reversed_dict.keys():
+                if today > i:
+                    self.race_menu.set(self.countries[i])
+                    break
+
     def race_menu_vals(self, season):
         self.countries = {}
         self.data.execute(f"SELECT track, date FROM races WHERE season = {season} ORDER BY round")
@@ -156,16 +170,6 @@ class MainApplication(ctk.CTk):
             self.countries[i[1]] = i[0]
 
         self.race_menu.configure(values=list(self.countries.values()))
-
-        today = str(date.today())
-        if today in self.countries:
-            self.race_menu.set(self.countries[today])
-        else:
-            latest = today
-            for i in self.countries.keys():
-                if latest < i:
-                    self.race_menu.set(self.countries[i])
-                    break
 
 
 def main():
