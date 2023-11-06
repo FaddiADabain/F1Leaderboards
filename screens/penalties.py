@@ -35,9 +35,6 @@ class Penalties(ctk.CTkFrame):
         self.lapsL = ctk.CTkLabel(self, text=f"Laps: {self.lapsT}", font=("Lucidia Sans", 20))
         self.lapsL.grid(row=1, column=2, sticky="ne", columnspan=3, padx=20, pady=10)
 
-        ptsL = ctk.CTkLabel(self, text="Pts.", font=("Lucidia Sans", 20))
-        ptsL.grid(row=2, column=2, sticky="ne", columnspan=3, padx=20)
-
         self.scrollable_frame = ctk.CTkScrollableFrame(self, width=720, height=200)
         self.scrollable_frame.grid(row=3, column=1, columnspan=3, pady=10, sticky="nsew")
 
