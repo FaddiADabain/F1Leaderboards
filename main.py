@@ -106,6 +106,10 @@ class MainApplication(ctk.CTk):
         self.race_menu.configure(values=list(self.countries.values()))
         self.race_menu.set(self.countries[list(self.countries.keys())[0]])
 
+        self.race_menu_callback(self.race_menu.get())
+
+        self.segmented_button_callback(self.segmented_buttons.get())
+
     def race_menu_callback(self, selected_value):
         self.leaderboardF.load_data(selected_value, season=self.season_menu.get())
         self.leaderboardF.fill_leader()
