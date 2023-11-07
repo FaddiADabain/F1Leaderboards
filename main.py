@@ -141,7 +141,7 @@ class MainApplication(ctk.CTk):
             frame.grid_remove()
 
         # Show the selected frame
-        self.show_frame(selected_value)
+        self.show_frame(self.segmented_buttons.get())
         
         if (self.segmented_buttons.get() == "Leaderboards" or self.segmented_buttons.get() == "Race Penalties"
                 or self.segmented_buttons.get() == "Tyre Strategies"):
