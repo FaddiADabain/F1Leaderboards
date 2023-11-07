@@ -136,6 +136,13 @@ class MainApplication(ctk.CTk):
             self.standingsF.fill()
 
     def race_menu_callback(self, selected_value):
+        # Hide all frames
+        for frame in self.frames.values():
+            frame.grid_remove()
+
+        # Show the selected frame
+        self.show_frame(selected_value)
+        
         if (self.segmented_buttons.get() == "Leaderboards" or self.segmented_buttons.get() == "Race Penalties"
                 or self.segmented_buttons.get() == "Tyre Strategies"):
             self.leaderboardF.load_data(selected_value, season=self.season_menu.get())
