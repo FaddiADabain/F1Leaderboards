@@ -47,6 +47,3 @@ class Standings(ctk.CTkFrame):
 
             ptsL = ctk.CTkLabel(self.scrollable_frame, text=ptsT_formatted, font=("Lucidia Sans", 17))
             ptsL.grid(row=index, column=2, sticky="e", padx=20, pady=10)
-
-    def run(self):
-        self.mainloop()

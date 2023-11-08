@@ -99,11 +99,3 @@ class Penalties(ctk.CTkFrame):
         self.data.execute(query)
 
         self.penalties = self.data.fetchone()
-
-    def segmented_button_callback(self, selected_value):
-
-        if selected_value == "Leaderboards":
-            self.controller.show_frame("Leaderboard")
-
-    def run(self):
-        self.mainloop()

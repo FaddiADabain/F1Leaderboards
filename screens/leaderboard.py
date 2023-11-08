@@ -95,6 +95,3 @@ class Leaderboard(ctk.CTkFrame):
                  f"WHERE r.season = {seasonT} AND r.round = {roundT} "
                  "ORDER BY r.season, r.round, r.result")
         self.data.execute(query)
-
-    def run(self):
-        self.mainloop()

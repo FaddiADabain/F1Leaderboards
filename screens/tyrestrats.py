@@ -54,11 +54,13 @@ class Strategies(ctk.CTkFrame):
         # Set weights for rows and columns
         self.grid_rowconfigure(1, weight=0)  # Country label row
         self.grid_rowconfigure(2, weight=0)  # Track row
-        self.grid_rowconfigure(3, weight=1)  # Scrollable Frame row
+        self.grid_rowconfigure(4, weight=1)  # Scrollable Frame row
 
         self.grid_columnconfigure(0, weight=1)  # Country and track label column
         self.grid_columnconfigure(1, weight=1)  # This will be the container for the segmented button
         self.grid_columnconfigure(2, weight=1)  # Laps and Pts label column
+        self.grid_columnconfigure(3, weight=1)
+        self.grid_columnconfigure(4, weight=1)
 
         # UI Elements
         self.countryL = ctk.CTkLabel(self, text=self.countryT, font=("Lucidia Sans", 25))
@@ -68,10 +70,25 @@ class Strategies(ctk.CTkFrame):
         self.trackL.grid(row=2, column=0, sticky="nw", padx=20)
 
         self.lapsL = ctk.CTkLabel(self, text=f"Laps: {self.lapsT}", font=("Lucidia Sans", 20))
-        self.lapsL.grid(row=1, column=1, sticky="ne", columnspan=3, padx=20, pady=10)
+        self.lapsL.grid(row=1, column=1, sticky="ne", columnspan=5, padx=20, pady=10)
+
+        red = ctk.CTkLabel(self, text="Red = Soft", font=("Lucidia Sans", 15))
+        red.grid(row=3, column=0, sticky="n", padx=10, pady=10)
+
+        yellow = ctk.CTkLabel(self, text="Yellow = Medium", font=("Lucidia Sans", 15))
+        yellow.grid(row=3, column=1, sticky="n", padx=10, pady=10)
+
+        white = ctk.CTkLabel(self, text="White = Hard", font=("Lucidia Sans", 15))
+        white.grid(row=3, column=2, sticky="n", padx=10, pady=10)
+
+        green = ctk.CTkLabel(self, text="Green = Inter", font=("Lucidia Sans", 15))
+        green.grid(row=3, column=3, sticky="n", padx=10, pady=10)
+
+        blue = ctk.CTkLabel(self, text="Blue = Wet", font=("Lucidia Sans", 15))
+        blue.grid(row=3, column=4, sticky="n", padx=10, pady=10)
 
         self.scrollable_frame = ctk.CTkScrollableFrame(self, width=720, height=200)
-        self.scrollable_frame.grid(row=3, column=0, columnspan=3, pady=10, sticky="nsew")
+        self.scrollable_frame.grid(row=4, column=0, columnspan=5, pady=10, sticky="nsew")
 
         self.fill()
 
@@ -88,7 +105,7 @@ class Strategies(ctk.CTkFrame):
         seasonT = fetched[3]
         roundT = fetched[4]
 
-        query = ("SELECT d.name, s.tirestat FROM drivers d JOIN strategies s ON d.number = s.number AND d.season = "
+        query = ("SELECT d.name, s.tirestrat FROM drivers d JOIN strategies s ON d.number = s.number AND d.season = "
                  "s.season JOIN results r ON d.number = r.number AND d.season = r.season AND s.round = r.round "
                  f"WHERE d.season = {seasonT} AND r.round = {roundT} "
                  "ORDER BY r.result")
@@ -140,6 +157,3 @@ class Strategies(ctk.CTkFrame):
                 driver_stints.append((round(percentage, 2), color))  # Append to the driver's stints list
 
             self.result.append(driver_stints)  # Append the driver's entire stint list to the result list
-
-    def run(self):
-        self.mainloop()
