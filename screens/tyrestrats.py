@@ -73,19 +73,19 @@ class Strategies(ctk.CTkFrame):
         self.lapsL.grid(row=1, column=1, sticky="ne", columnspan=5, padx=20, pady=10)
 
         red = ctk.CTkLabel(self, text="Red = Soft", font=("Lucidia Sans", 15))
-        red.grid(row=3, column=0, sticky="n", padx=10, pady=10)
+        red.grid(row=3, column=0, sticky="ns", padx=10, pady=10)
 
         yellow = ctk.CTkLabel(self, text="Yellow = Medium", font=("Lucidia Sans", 15))
-        yellow.grid(row=3, column=1, sticky="n", padx=10, pady=10)
+        yellow.grid(row=3, column=1, sticky="ns", padx=10, pady=10)
 
         white = ctk.CTkLabel(self, text="White = Hard", font=("Lucidia Sans", 15))
-        white.grid(row=3, column=2, sticky="n", padx=10, pady=10)
+        white.grid(row=3, column=2, sticky="ns", padx=10, pady=10)
 
         green = ctk.CTkLabel(self, text="Green = Inter", font=("Lucidia Sans", 15))
-        green.grid(row=3, column=3, sticky="n", padx=10, pady=10)
+        green.grid(row=3, column=3, sticky="ns", padx=10, pady=10)
 
         blue = ctk.CTkLabel(self, text="Blue = Wet", font=("Lucidia Sans", 15))
-        blue.grid(row=3, column=4, sticky="n", padx=10, pady=10)
+        blue.grid(row=3, column=4, sticky="ns", padx=10, pady=10)
 
         self.scrollable_frame = ctk.CTkScrollableFrame(self, width=720, height=200)
         self.scrollable_frame.grid(row=4, column=0, columnspan=5, pady=10, sticky="nsew")
