@@ -67,14 +67,9 @@ class MainApplication(ctk.CTk):
             "Tyre Strategies": self.strategiesF
         }
 
-        # Add frames to the application
-        for FrameClass in (Leaderboard, Penalties):
-            frame = FrameClass(parent=self.container, controller=self, db=self.data)
-            frame_name = FrameClass.__name__
-            self.frames[frame_name] = frame
-            frame.pack(side="top", fill="both", expand=True)
-
-        self.show_frame("Leaderboard")
+        self.frames["Leaderboards"].load_data(self.race_menu.get())
+        self.frames["Leaderboards"].fill_leader()
+        self.show_frame("Leaderboards")
 
     def init_db(self):
         self.db = sqlite3.connect("data/f1leaderboard.db")
