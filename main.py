@@ -102,6 +102,8 @@ class MainApplication(ctk.CTk):
                 or selected_value == "Tyre Strategies"):
             self.race_menu_vals(self.season_menu.get())
             self.race_menu.set(self.leaderboardF.trackT)
+            self.leaderboardF.load_data(self.race_menu.values[0], season=self.season_menu.get())
+            self.leaderboardF.fill_leader()
         if selected_value == "Standings":
             self.race_menu.configure(values=("Drivers' Championship", "Constructors' Championship"))
             self.race_menu.set("Drivers' Championship")
