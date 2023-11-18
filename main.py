@@ -111,6 +111,8 @@ class MainApplication(ctk.CTk):
         if selected_value == "Standings":
             self.race_menu.configure(values=("Drivers' Championship", "Constructors' Championship"))
             self.race_menu.set("Drivers' Championship")
+            self.standingsF.load_data("drivers", self.season_menu.get())
+            self.standingsF.fill()
 
     def season_menu_callback(self, selected_value):
         if (self.segmented_buttons.get() == "Leaderboards" or self.segmented_buttons.get() == "Race Penalties"
