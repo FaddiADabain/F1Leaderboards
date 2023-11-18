@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from datetime import date
+import pygame
 
 
 class Leaderboard(ctk.CTkFrame):
@@ -44,9 +45,11 @@ class Leaderboard(ctk.CTkFrame):
         self.scrollable_frame = ctk.CTkScrollableFrame(self, width=720, height=200)
         self.scrollable_frame.grid(row=3, column=0, columnspan=3, pady=10, sticky="nsew")
 
-        self.fill_leader()
+        pygame.mixer.init()
 
     def fill_leader(self):
+        max = False
+        car = False
         self.countryL.configure(text=self.countryT)
         self.trackL.configure(text=self.trackT)
         self.lapsL.configure(text=f"Laps: {self.lapsT}")
@@ -74,6 +77,20 @@ class Leaderboard(ctk.CTkFrame):
 
             ptsL = ctk.CTkLabel(self.scrollable_frame, text=ptsT_formatted, font=("Lucidia Sans", 17))
             ptsL.grid(row=index, column=2, sticky="e", padx=20, pady=10)
+
+            if index == 0 and resultT == "1" and leaderT == "Max Verstappen":
+                max = True
+            elif index == 0 and resultT == "1" and leaderT == "Carlos Sainz":
+                car = True
+
+        if max:
+            pygame.mixer.music.load('data/clip.mp3')
+            pygame.mixer.music.set_volume(0.5)
+            self.after(1000, pygame.mixer.music.play)
+        elif car:
+            pygame.mixer.music.load('data/clip2.mp3')
+            pygame.mixer.music.set_volume(0.5)
+            self.after(1000, pygame.mixer.music.play)
 
     def load_data(self, race, season=date.today().year):
         query = (
