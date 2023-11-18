@@ -101,9 +101,13 @@ class MainApplication(ctk.CTk):
         if (selected_value == "Leaderboards" or selected_value == "Race Penalties"
                 or selected_value == "Tyre Strategies"):
             self.race_menu_vals(self.season_menu.get())
-            self.race_menu.set(self.leaderboardF.trackT)
+            self.race_menu.set(self.race_menu.values[0])
             self.leaderboardF.load_data(self.race_menu.values[0], season=self.season_menu.get())
             self.leaderboardF.fill_leader()
+            self.penaltiesF.load_data(self.race_menu.values[0], season=self.season_menu.get())
+            self.penaltiesF.fill_penalties()
+            self.strategiesF.load_data(self.race_menu.values[0], season=self.season_menu.get())
+            self.strategiesF.fill()
         if selected_value == "Standings":
             self.race_menu.configure(values=("Drivers' Championship", "Constructors' Championship"))
             self.race_menu.set("Drivers' Championship")
