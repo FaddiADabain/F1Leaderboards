@@ -14,6 +14,8 @@ class MainApplication(ctk.CTk):
         super().__init__(*args, **kwargs)
         self.data = None
         self.db = None
+        self.last_selected_race = None
+        self.last_selected_season = 2023
         self.countries = {}
         self.init_db()
         self.after(100, lambda: self.state("zoomed"))
@@ -70,6 +72,7 @@ class MainApplication(ctk.CTk):
         self.frames["Leaderboards"].load_data(self.race_menu.get())
         self.frames["Leaderboards"].fill_leader()
         self.show_frame("Leaderboards")
+        self.last_selected_race = self.race_menu.get()
 
     def init_db(self):
         self.db = sqlite3.connect("data/f1leaderboard.db")
@@ -98,60 +101,52 @@ class MainApplication(ctk.CTk):
         # Show the selected frame
         self.show_frame(selected_value)
 
-        if (selected_value == "Leaderboards" or selected_value == "Race Penalties"
-                or selected_value == "Tyre Strategies"):
-            self.race_menu_vals(self.season_menu.get())
-            self.race_menu.set(self.leaderboardF.trackT)
-            self.leaderboardF.load_data(self.race_menu.values[0], season=self.season_menu.get())
-            self.leaderboardF.fill_leader()
+        # Check if the selected frame is 'Standings'
         if selected_value == "Standings":
+            # Configure the race menu for the 'Standings' frame
             self.race_menu.configure(values=("Drivers' Championship", "Constructors' Championship"))
             self.race_menu.set("Drivers' Championship")
+            self.standingsF.load_data(table="Drivers' Championship", season=self.season_menu.get())
+            self.standingsF.fill()
+
+        else:
+            # Configure the race menu for other frames
+            self.race_menu_vals(self.season_menu.get())
+            if self.last_selected_race is not None and self.last_selected_race in self.race_menu.values:
+                self.race_menu.set(self.last_selected_race)
+            else:
+                self.last_selected_race = self.race_menu.values[0]
+                self.race_menu.set(self.last_selected_race)
+
+            self.update_frames(selected_value, self.race_menu.get(), self.season_menu.get())
 
     def season_menu_callback(self, selected_value):
-        if (self.segmented_buttons.get() == "Leaderboards" or self.segmented_buttons.get() == "Race Penalties"
-                or self.segmented_buttons.get() == "Tyre Strategies"):
-            self.countries.clear()
-            self.data.execute(f"SELECT track, date FROM races WHERE season = {str(selected_value)} ORDER BY round")
+        if selected_value != self.last_selected_season:
+            self.last_selected_season = selected_value
+            self.race_menu_vals(selected_value)
+            self.last_selected_race = self.race_menu.values[0]
+            self.race_menu.set(self.last_selected_race)
 
-            for i in self.data:
-                self.countries[i[1]] = i[0]
-
-            self.race_menu.configure(values=list(self.countries.values()))
-            self.race_menu.set(self.countries[list(self.countries.keys())[0]])
-
-            self.race_menu_callback(self.race_menu.get())
-
-            self.segmented_button_callback(self.segmented_buttons.get())
-
-        elif self.segmented_buttons.get() == "Standings" and self.race_menu.get() == "Drivers' Championship":
-            self.standingsF.load_data("drivers", season=selected_value)
-            self.standingsF.fill()
-
-        elif self.segmented_buttons.get() == "Standings" and self.race_menu.get() == "Constructors' Championship":
-            self.standingsF.load_data("teams", season=selected_value)
-            self.standingsF.fill()
+        self.segmented_button_callback(self.segmented_buttons.get())
 
     def race_menu_callback(self, selected_value):
+        self.last_selected_race = selected_value
         self.show_frame(self.segmented_buttons.get())
-        
-        if (self.segmented_buttons.get() == "Leaderboards" or self.segmented_buttons.get() == "Race Penalties"
-                or self.segmented_buttons.get() == "Tyre Strategies"):
-            self.leaderboardF.load_data(selected_value, season=self.season_menu.get())
+        self.update_frames(self.segmented_buttons.get(), selected_value, self.season_menu.get())
+
+    def update_frames(self, frame_name, race, season):
+        if frame_name == "Leaderboards":
+            self.leaderboardF.load_data(race, season=season)
             self.leaderboardF.fill_leader()
-
-            self.penaltiesF.load_data(selected_value, season=self.season_menu.get())
+        elif frame_name == "Race Penalties":
+            self.penaltiesF.load_data(race, season=season)
             self.penaltiesF.fill_penalties()
-
-            self.strategiesF.load_data(selected_value, season=self.season_menu.get())
+        elif frame_name == "Tyre Strategies":
+            self.strategiesF.load_data(race, season=season)
             self.strategiesF.fill()
-
-        elif selected_value == "Drivers' Championship":
-            self.standingsF.load_data("drivers", season=self.season_menu.get())
-            self.standingsF.fill()
-
-        elif selected_value == "Constructors' Championship":
-            self.standingsF.load_data("teams", season=self.season_menu.get())
+        elif frame_name == "Standings":
+            print(self.race_menu.get())
+            self.standingsF.load_data(table=self.race_menu.get(), season=season)
             self.standingsF.fill()
 
     def race_menu_init(self):
