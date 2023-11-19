@@ -84,7 +84,10 @@ class Leaderboard(ctk.CTkFrame):
 
         self.countryT = fetched[0]
         self.trackT = fetched[1]
-        self.lapsT = str(int(fetched[2]))
+        if fetched[2] is not None:
+            self.lapsT = str(int(fetched[2]))
+        else:
+            self.lapsT = "Not Updated Yet"
         seasonT = fetched[3]
         roundT = fetched[4]
 
