@@ -46,7 +46,6 @@ class Leaderboard(ctk.CTkFrame):
         self.scrollable_frame.grid(row=3, column=0, columnspan=3, pady=10, sticky="nsew")
 
         pygame.mixer.init()
-        self.fill_leader()
 
     def fill_leader(self):
         max = False
