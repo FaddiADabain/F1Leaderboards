@@ -106,7 +106,7 @@ class MainApplication(ctk.CTk):
             # Configure the race menu for the 'Standings' frame
             self.race_menu.configure(values=("Drivers' Championship", "Constructors' Championship"))
             self.race_menu.set("Drivers' Championship")
-            self.standingsF.load_data("drivers", self.season_menu.get())
+            self.standingsF.load_data(table="Drivers' Championship", season=self.season_menu.get())
             self.standingsF.fill()
 
         else:
@@ -144,6 +144,10 @@ class MainApplication(ctk.CTk):
         elif frame_name == "Tyre Strategies":
             self.strategiesF.load_data(race, season=season)
             self.strategiesF.fill()
+        elif frame_name == "Standings":
+            print(self.race_menu.get())
+            self.standingsF.load_data(table=self.race_menu.get(), season=season)
+            self.standingsF.fill()
 
     def race_menu_init(self):
         self.race_menu_vals(2023)

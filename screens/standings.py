@@ -9,7 +9,7 @@ class Standings(ctk.CTkFrame):
         self.scrollable_frame = None
         self.controller = controller
         self.data = db
-        self.table = 'drivers'
+        self.table = "Drivers' Championship"
         self.load_data(self.table)
         self.setup_ui()
 
@@ -24,13 +24,11 @@ class Standings(ctk.CTkFrame):
         self.scrollable_frame.grid_columnconfigure(1, weight=1)
         self.scrollable_frame.grid_columnconfigure(2, weight=1)
 
-        self.fill()
-
-    def load_data(self, table, season=date.today().year):
-        if table == 'drivers':
+    def load_data(self, table="Drivers' Championship", season=date.today().year):
+        if table == "Drivers' Championship":
             query = f"SELECT name, points, team FROM drivers WHERE season = {season} ORDER BY points DESC"
             self.data.execute(query)
-        elif table == 'teams':
+        elif table == "Constructors' Championship":
             query = f"SELECT name, points FROM teams WHERE season = {season} ORDER BY points DESC"
             self.data.execute(query)
         else:
@@ -62,7 +60,7 @@ class Standings(ctk.CTkFrame):
         }
 
         # Fetch data and fill the labels and sizes lists
-        if self.table == 'drivers':
+        if self.table == "Drivers' Championship":
             for name, points, team in fetched:
                 labels.append(name)
                 sizes.append(points)
@@ -76,14 +74,9 @@ class Standings(ctk.CTkFrame):
         # Create a figure for the plot
         fig, ax = plt.subplots()
 
-        # Manually set the background color
-        background_color = "#2e2e2e"  # Adjust this to match your theme color
+        background_color = "#2e2e2e"
         fig.patch.set_facecolor(background_color)
         ax.set_facecolor(background_color)
-
-        # Generate a list of colors for the teams
-        team_colors = [colors.get(team, "#FFFFFF") for team in labels]
-
         ax.pie(sizes, labels=labels, autopct='%1.1f%%', colors=team_colors_list)
 
         # Create a canvas and add the figure to it
