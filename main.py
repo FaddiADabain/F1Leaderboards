@@ -118,6 +118,7 @@ class MainApplication(ctk.CTk):
                 self.last_selected_race = self.race_values[0]
                 self.race_menu.set(self.last_selected_race)
 
+            self.race_menu_vals(self.season_menu.get())
             self.update_frames(selected_value, self.race_menu.get(), self.season_menu.get())
 
     def season_menu_callback(self, selected_value):
