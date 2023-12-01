@@ -5,7 +5,9 @@ from screens.leaderboard import Leaderboard
 from screens.penalties import Penalties
 from screens.standings import Standings
 from screens.tyrestrats import Strategies
+from screens.admin import Admin
 from collections import OrderedDict
+import keyboard
 
 
 class MainApplication(ctk.CTk):
@@ -76,6 +78,11 @@ class MainApplication(ctk.CTk):
         self.frames["Leaderboards"].fill_leader()
         self.show_frame("Leaderboards")
         self.last_selected_race = self.race_menu.get()
+        keyboard.on_press_key("f1", lambda _: self.open_admin())
+
+    def open_admin(self):
+        if not hasattr(self, 'admin') or not self.admin.winfo_exists():
+            self.admin = Admin(self, self.data)
 
     def init_db(self):
         self.db = sqlite3.connect("data/f1leaderboard.db")
@@ -105,13 +112,13 @@ class MainApplication(ctk.CTk):
         self.show_frame(selected_value)
 
         if selected_value == "Standings":
-        # Configure the race menu for the 'Standings' frame
+            # Configure the race menu for the 'Standings' frame
             self.race_menu.configure(values=("Drivers' Championship", "Constructors' Championship"))
             self.race_menu.set("Drivers' Championship")
             self.standingsF.load_data(table="Drivers' Championship", season=self.season_menu.get())
             self.standingsF.fill()
         else:
-        # Update the race menu based on the last selected race
+            # Update the race menu based on the last selected race
             if self.last_selected_race in self.race_values:
                 self.race_menu.set(self.last_selected_race)
             else:
@@ -125,7 +132,7 @@ class MainApplication(ctk.CTk):
         if self.segmented_buttons.get() != "Standings":
             # Update the race menu values based on the selected season
             self.race_menu_vals(selected_value)
-        
+
             # Set the race menu to the first race of the season
             if self.race_values:
                 self.last_selected_race = self.race_values[0]
@@ -149,7 +156,6 @@ class MainApplication(ctk.CTk):
             self.strategiesF.load_data(race, season=season)
             self.strategiesF.fill()
         elif frame_name == "Standings":
-            print(self.race_menu.get())
             self.standingsF.load_data(table=self.race_menu.get(), season=season)
             self.standingsF.fill()
 
