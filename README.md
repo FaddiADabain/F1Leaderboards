@@ -20,4 +20,9 @@ pip install packaging
 pip install customtkinter
 ```
 
+- keyboard
+```
+pip install keyboard
+```
+
 ## How to install
