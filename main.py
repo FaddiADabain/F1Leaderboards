@@ -5,8 +5,9 @@ from screens.leaderboard import Leaderboard
 from screens.penalties import Penalties
 from screens.standings import Standings
 from screens.tyrestrats import Strategies
-from screens.admin import Admin
 from collections import OrderedDict
+from screens.admin import Admin
+from screens.login import Login
 import keyboard
 
 
@@ -14,6 +15,8 @@ class MainApplication(ctk.CTk):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.login = None
+        self.admin = None
         self.data = None
         self.db = None
         self.last_selected_race = None
@@ -78,15 +81,22 @@ class MainApplication(ctk.CTk):
         self.frames["Leaderboards"].fill_leader()
         self.show_frame("Leaderboards")
         self.last_selected_race = self.race_menu.get()
-        keyboard.on_press_key("f1", lambda _: self.open_admin())
+        keyboard.on_press_key("f1", lambda _: self.open_login())
+
+    def open_login(self):
+        if self.login is None or not self.login.winfo_exists():
+            self.login = Login(self, self.adminDb, self.adminCursor)
 
     def open_admin(self):
-        if not hasattr(self, 'admin') or not self.admin.winfo_exists():
+        if self.admin is None or not self.admin.winfo_exists():
             self.admin = Admin(self, self.data)
 
     def init_db(self):
         self.db = sqlite3.connect("data/f1leaderboard.db")
         self.data = self.db.cursor()
+
+        self.adminDb = sqlite3.connect("data/admin.db")
+        self.adminCursor = self.adminDb.cursor()
 
     def on_exit(self):
         # Close the database connection when the app is closing
