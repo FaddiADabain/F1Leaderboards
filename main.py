@@ -121,32 +121,31 @@ class MainApplication(ctk.CTk):
         # Show the selected frame
         self.show_frame(selected_value)
 
+        # Check if the selected frame is 'Standings'
         if selected_value == "Standings":
             # Configure the race menu for the 'Standings' frame
             self.race_menu.configure(values=("Drivers' Championship", "Constructors' Championship"))
             self.race_menu.set("Drivers' Championship")
             self.standingsF.load_data(table="Drivers' Championship", season=self.season_menu.get())
             self.standingsF.fill()
+
         else:
-            # Update the race menu based on the last selected race
-            if self.last_selected_race in self.race_values:
+            # Configure the race menu for other frames
+            self.race_menu_vals(self.season_menu.get())
+            if self.last_selected_race is not None and self.last_selected_race in self.race_menu.values:
                 self.race_menu.set(self.last_selected_race)
             else:
-                self.last_selected_race = self.race_values[0]
+                self.last_selected_race = self.race_menu.values[0]
                 self.race_menu.set(self.last_selected_race)
 
-            self.race_menu_vals(self.season_menu.get())
             self.update_frames(selected_value, self.race_menu.get(), self.season_menu.get())
 
     def season_menu_callback(self, selected_value):
-        if self.segmented_buttons.get() != "Standings":
-            # Update the race menu values based on the selected season
+        if selected_value != self.last_selected_season:
+            self.last_selected_season = selected_value
             self.race_menu_vals(selected_value)
-
-            # Set the race menu to the first race of the season
-            if self.race_values:
-                self.last_selected_race = self.race_values[0]
-                self.race_menu.set(self.last_selected_race)
+            self.last_selected_race = self.race_menu.values[0]
+            self.race_menu.set(self.last_selected_race)
 
         self.segmented_button_callback(self.segmented_buttons.get())
 
@@ -166,6 +165,7 @@ class MainApplication(ctk.CTk):
             self.strategiesF.load_data(race, season=season)
             self.strategiesF.fill()
         elif frame_name == "Standings":
+            print(self.race_menu.get())
             self.standingsF.load_data(table=self.race_menu.get(), season=season)
             self.standingsF.fill()
 
