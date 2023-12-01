@@ -165,7 +165,6 @@ class MainApplication(ctk.CTk):
             self.strategiesF.load_data(race, season=season)
             self.strategiesF.fill()
         elif frame_name == "Standings":
-            print(self.race_menu.get())
             self.standingsF.load_data(table=self.race_menu.get(), season=season)
             self.standingsF.fill()
 
