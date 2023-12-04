@@ -15,7 +15,6 @@ class Leaderboard(ctk.CTkFrame):
         self.scrollable_frame = None
         self.controller = controller
         self.data = db
-        self.load_data(self.controller.race_menu.get())
         self.setup_ui()
 
     def setup_ui(self):
@@ -98,3 +97,5 @@ class Leaderboard(ctk.CTkFrame):
                  f"WHERE r.season = {seasonT} AND r.round = {roundT} "
                  "ORDER BY r.season, r.round, r.result")
         self.data.execute(query)
+
+        return self.data

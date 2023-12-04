@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from datetime import date
 
+
 class Standings(ctk.CTkFrame):
     def __init__(self, parent, controller, db):
         super().__init__(parent)
