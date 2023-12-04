@@ -10,19 +10,24 @@ The "F1 Leaderboard Database" is a platform designed to provide users with a det
 ## Watch how this works!
 
 ## Prerequisites
-- Packaging (required by cumsomtkinter)
-```
-pip install packaging
-```
-
 - CustomTKinter
 ```
 pip install customtkinter
 ```
 
+- Packaging (required by cumsomtkinter)
+```
+pip install packaging
+```
+
 - keyboard
 ```
 pip install keyboard
+```
+
+- matplotlib
+```
+pip install matplotlib
 ```
 
 ## How to install
