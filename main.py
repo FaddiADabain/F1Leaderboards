@@ -197,11 +197,7 @@ class MainApplication(ctk.CTk):
         self.race_menu.configure(values=self.race_values)
 
 
-def main():
+if __name__ == "__main__":
     app = MainApplication()
     app.protocol("WM_DELETE_WINDOW", app.on_exit)
     app.mainloop()
-
-
-if __name__ == "__main__":
-    main()
