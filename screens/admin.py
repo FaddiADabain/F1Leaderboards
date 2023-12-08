@@ -1,65 +1,69 @@
-import customtkinter as ctk  # Import CustomTkinter for enhanced tkinter widgets
-import sqlite3  # Import sqlite3 for database interactions
+import customtkinter as ctk  # Enhanced tkinter module for improved UI elements
+import sqlite3  # SQLite3 for database operations
 
-# Define a class 'Admin' that inherits from CTkToplevel, a customtkinter class for top-level windows
+# Define the 'Admin' class, inheriting from customtkinter's CTkToplevel
 class Admin(ctk.CTkToplevel):
-    # Constructor for the Admin class
     def __init__(self, master, db, *args, **kwargs):
-        super().__init__(master, *args, **kwargs)  # Call the constructor of the base class
-        self.db = db  # Store the database connection
-        self.after(100, lambda: self.state("zoomed"))  # Maximize window after 100ms
-        self.iconbitmap("data/logo.ico")  # Set the window icon
-        self.title("F1 Leaderboards Admin Panel")  # Set the window title
-        ctk.set_appearance_mode("DARK")  # Set the theme to dark mode
-        ctk.set_default_color_theme("blue")  # Set the color theme to blue
+        super().__init__(master, *args, **kwargs)  # Initialize the parent class (CTkToplevel)
+        self.db = db  # Database connection
+        # Set up the initial state and appearance of the window
+        self.after(100, lambda: self.state("zoomed"))  # Maximize the window after 100ms
+        self.iconbitmap("data/logo.ico")  # Set window icon
+        self.title("F1 Leaderboards Admin Panel")  # Set window title
+        ctk.set_appearance_mode("DARK")  # Set dark mode for the UI
+        ctk.set_default_color_theme("blue")  # Set default color theme
 
         # Create a frame for SQL input
         self.input_frame = ctk.CTkFrame(self)
         self.input_frame.pack(side="top", fill="x", padx=10, pady=10)
 
-        # Create an input field for SQL queries
+        # SQL Input Field
         self.sql_input = ctk.CTkEntry(self.input_frame)
         self.sql_input.pack(side="left", fill="x", expand=True)
 
-        # Create a button to execute SQL queries
+        # Execute Button to run the SQL query
         self.execute_button = ctk.CTkButton(self.input_frame, text="Execute", command=self.execute_query)
         self.execute_button.pack(side="right")
 
-        # Create a textbox to display results
+        # Textbox for displaying results of SQL queries
         self.results_display = ctk.CTkTextbox(self, state="disabled", height=10)
         self.results_display.pack(fill="both", expand=True, padx=10, pady=10)
 
-        # Bind the Enter key to execute the SQL query
+        # Binding the Enter key to execute SQL query
         self.sql_input.bind("<Return>", self.execute_query)
 
-    # Define a method to execute SQL queries
     def execute_query(self, event=None):
+        # Function to execute the SQL query entered in the input field
         query = self.sql_input.get()  # Get the query from the input field
         try:
-            self.db.execute(query)  # Try executing the query
-            results = self.db.fetchall()  # Fetch all results
+            self.db.execute(query)  # Execute the SQL query
+            results = self.db.fetchall()  # Fetch the results of the query
             self.display_results(results)  # Display the results
         except sqlite3.Error as e:
-            self.display_results(f"Error: {e}", error=True)  # Display error if query fails
+            # Handle any SQLite errors
+            self.display_results(f"Error: {e}", error=True)
         finally:
-            self.sql_input.delete(0, 'end')  # Clear the input field
+            # Clear the SQL input field after query execution
+            self.sql_input.delete(0, 'end')
 
-    # Define a method to display results or errors
     def display_results(self, results, error=False):
-        self.results_display.configure(state="normal")  # Enable the textbox
+        # Function to display the results or errors in the results textbox
+        self.results_display.configure(state="normal")  # Enable the textbox to modify text
         if error:
-            self.results_display.insert("end", f"{results}\n")  # Insert error message
+            # Display the error message
+            self.results_display.insert("end", f"{results}\n")
         else:
+            # Display each row of the query results
             for row in results:
-                self.results_display.insert("end", f"{row}\n")  # Insert each row of results
-        self.results_display.configure(state="disabled")  # Disable the textbox
+                self.results_display.insert("end", f"{row}\n")
+        self.results_display.configure(state="disabled")  # Disable the textbox after updating text
 
-    # Define a method to handle window close event
     def on_exit(self):
+        # Function to handle the window closing event
         self.destroy()  # Destroy the window
 
-    # Main function to run the application
     def main(self):
-        app = Admin()  # Create an instance of Admin
-        app.protocol("WM_DELETE_WINDOW", app.on_exit)  # Bind window close event
-        app.mainloop()  # Start the event loop
+        # Main function to run the application (not typically used as Admin is a Toplevel window)
+        app = Admin()
+        app.protocol("WM_DELETE_WINDOW", app.on_exit)
+        app.mainloop()  # Start the application's main loop
