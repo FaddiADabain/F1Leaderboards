@@ -6,9 +6,9 @@ from screens.leaderboard import Leaderboard
 from screens.penalties import Penalties
 from screens.standings import Standings
 from screens.tyrestrats import Strategies
-from collections import OrderedDict  # Ordered dictionary to maintain order
-from screens.admin import Admin
 from screens.login import Login
+from screens.admin import Admin
+from collections import OrderedDict  # Ordered dictionary to maintain order
 import keyboard  # Module to capture keyboard events
 
 # Main application class inheriting from customtkinter CTk class
