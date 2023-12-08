@@ -65,7 +65,26 @@ class Leaderboard(ctk.CTkFrame):
             ptsL.grid(row=index, column=2, sticky="e", padx=20, pady=10)
 
     # Define a method to load data for the leaderboard
-    def load_data(self, race, season=date.today().year):
-        # SQL query to fetch race details
-        query = ("SELECT r.country, r.track, r.laps, r.season, r.round FROM races r WHERE r.season = ? AND r.track = ? ORDER BY date DESC")
-        self.data.execute(query,
+        def load_data(self, race, season=date.today().year):
+            # SQL query to fetch race details
+            query = ("SELECT r.country, r.track, r.laps, r.season, r.round FROM races r WHERE r.season = ? AND r.track = ? ORDER BY date DESC")
+            self.data.execute(query, (season, race))  # Execute the query with provided season and race
+            fetched = self.data.fetchone()  # Fetch one record
+
+            # Extract and store race details
+            self.countryT = fetched[0]  # Country of the race
+            self.trackT = fetched[1]  # Track name
+            # Store the number of laps; if it's not updated yet, use a placeholder string
+            self.lapsT = str(int(fetched[2])) if fetched[2] is not None else "Not Updated Yet"
+            seasonT = fetched[3]  # Season year
+            roundT = fetched[4]  # Round number
+
+            # SQL query to fetch leaderboard data
+            query = ("SELECT r.status, d.name, r.points "
+                     "FROM results r "
+                     "JOIN drivers d ON r.number = d.number AND r.season = d.season "
+                     "JOIN races ra ON r.season = ra.season AND r.round = ra.round "
+                     f"WHERE r.season = {seasonT} AND r.round = {roundT} "
+                     "ORDER BY r.season, r.round, r.result")
+            self.data.execute(query)  # Execute the query
+
