@@ -11,11 +11,6 @@ The "F1 Leaderboard Database" is a platform designed to provide users with a det
 Video will be added displaying how program works soon.
 
 ## Prerequisites
-- Pip
-```
-python get-pip.py
-```
-
 - CustomTKinter
 ```
 pip install customtkinter
@@ -39,7 +34,7 @@ pip install matplotlib
 ## How to install and run
 1. Download python 3.11 or newer
 2. After opening up the .exe for python installation, SELECT THE BOX THAT SAYS 'Add python.exe to PATH', then select 'Install Now'
-3. Install all the prerequisites in command prompt (pip must be the first one to be downloaded to install the rest)
+3. Install all the prerequisites in command prompt
 4. Install any python interpreter (VSCode will be used for this installation process)
 5. Unzip the folder to a memorable location
 6. Open VSCode using a new window
