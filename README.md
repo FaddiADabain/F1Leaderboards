@@ -42,3 +42,8 @@ pip install matplotlib
 8. Open the unzipped folder once and select the folder that is inside
 9. Select the main.py file and install the Python extension from Microsoft (This option should show up at the bottom right of the window after selecting the main.py file)
 10. Press run at the top right of the window (arrow pointing right)
+
+## Issues trying to run after starting the program once
+After you start the program once and close the program, there is a known issue where VSCode does not run again.
+The solution to this is to select the terminal that opened up at the bottom of the window and press CTRL + C on your keyboard. The program should be able to run again.
+If this issue persists, select the trash icon at the top right of the terminal window.
