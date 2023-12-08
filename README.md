@@ -40,4 +40,5 @@ pip install matplotlib
 6. Open VSCode using a new window
 7. Select 'Open Folder...'
 8. Open the unzipped folder once and select the folder that is inside
-9. Press run at the top right of the window (arrow pointing right)
+9. Select the main.py file and install the Python extension from Microsoft (This option should show up at the bottom right of the window after selecting the main.py file)
+10. Press run at the top right of the window (arrow pointing right)
