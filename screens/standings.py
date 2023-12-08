@@ -25,6 +25,11 @@ class Standings(ctk.CTkFrame):
         self.scrollable_frame = ctk.CTkScrollableFrame(self, width=720, height=200)
         self.scrollable_frame.grid(row=3, column=0, columnspan=3, pady=10, sticky="nsew")
 
+        # Set up columns for the scrollable frame
+        self.scrollable_frame.grid_columnconfigure(0, weight=1)
+        self.scrollable_frame.grid_columnconfigure(1, weight=1)
+        self.scrollable_frame.grid_columnconfigure(2, weight=1)
+
     # Define a method to load data from the database
     def load_data(self, table="Drivers' Championship", season=date.today().year):
         # Choose the query based on the selected table
@@ -50,27 +55,57 @@ class Standings(ctk.CTkFrame):
         labels = []
         sizes = []
         team_colors_list = []
-        colors = {...}  # Define colors for teams
+        colors = {
+            'Red Bull': '#1E41FF',
+            'Mercedes': '#00D2BE',
+            'Ferrari': '#DC0000',
+            'Aston Martin': '#006F62',
+            'McLaren': '#FF8700',
+            'Alpine': '#0090FF',
+            'Williams': '#005AFF',
+            'Haas': '#FFFFFF',
+            'Alfa Romeo': '#900000',
+            'AlphaTauri': '#2B4562'
+        }  # Define colors for teams
 
         # Fetch data and fill the labels and sizes lists for the pie chart
         if self.table == "Drivers' Championship":
             # Process data for drivers' championship
             for name, points, team in fetched:
-                ...
+                labels.append(name)
+                sizes.append(points)
+                team_colors_list.append(colors.get(team, 'gray'))  # Use gray as default color
         else:
             # Process data for constructors' championship
             for name, points in fetched:
-                ...
+                labels.append(name)
+                sizes.append(points)
+                team_colors_list.append(colors.get(name, 'gray'))  # Use gray as default color
 
         # Create a figure for the pie chart
         fig, ax = plt.subplots()
-        ...
+        ax.pie(sizes, labels=labels, autopct='%1.1f%%', colors=team_colors_list)
+
+        # Set figure and axes properties for better visual appearance
+        fig.patch.set_facecolor('gray17')
+        ax.set_facecolor('gray17')
 
         # Create a canvas and add the figure to it
         canvas = FigureCanvasTkAgg(fig, master=self.scrollable_frame)
         canvas_widget = canvas.get_tk_widget()
         canvas_widget.grid(row=0, column=0, columnspan=3)
 
-        # Add other widgets (labels) below the pie chart
-        for index, item in enumerate(fetched):
-            ...
+        # Populate the scrollable frame with the standings data
+        for index, (name, points) in enumerate(fetched):
+            # Format the points value
+            pts_formatted = str(int(points)) if isinstance(points, float) and points.is_integer() else str(points)
+
+            # Create labels for rank, driver/team name, and points
+            rank_label = ctk.CTkLabel(self.scrollable_frame, text=index + 1, font=("Lucidia Sans", 17))
+            rank_label.grid(row=index + 1, column=0, sticky="nw", padx=20, pady=10)
+
+            name_label = ctk.CTkLabel(self.scrollable_frame, text=name, font=("Lucidia Sans", 17))
+            name_label.grid(row=index + 1, column=1, sticky="nw", padx=20, pady=10)
+
+            points_label = ctk.CTkLabel(self.scrollable_frame, text=pts_formatted, font=("Lucidia Sans", 17))
+            points_label.grid(row=index + 1, column=2, sticky="e", padx=20, pady=10)
