@@ -67,8 +67,26 @@ class Penalties(ctk.CTkFrame):
             self.penalties = self.data.fetchone()  # Fetch next row of penalties
             i += 1  # Increment row index
 
-    # Define a method to load data for the penalties section
-    def load_data(self, race, season=date.today().year):
-        # SQL query to fetch race details
-        query = ("SELECT r.country, r.track, r.laps, r.season, r.round FROM races r WHERE r.season = ? AND r.track = ? ORDER BY date DESC")
-        self.data.execute(query, (season
+        # Define a method to load data for the penalties section
+        def load_data(self, race, season=date.today().year):
+            # SQL query to fetch race details
+            query = ("SELECT r.country, r.track, r.laps, r.season, r.round FROM races r WHERE r.season = ? AND r.track = ? ORDER BY date DESC")
+            self.data.execute(query, (season, race))  # Execute the query with provided season and race
+            fetched = self.data.fetchone()  # Fetch one record
+
+            # Extract and store race details
+            self.countryT = fetched[0]  # Country of the race
+            self.trackT = fetched[1]  # Track name
+            # Store the number of laps; if it's not updated yet, use a placeholder string
+            self.lapsT = str(int(fetched[2])) if fetched[2] is not None else "Not Updated Yet"
+            seasonT = fetched[3]  # Season year
+            roundT = fetched[4]  # Round number
+
+            # SQL query to fetch penalties data
+            query = ("SELECT d.name, p.session, p.offence, p.decision "
+                     "FROM drivers d "
+                     "JOIN penalties p ON d.number = p.number AND d.season = p.season "
+                     f"WHERE p.round = {roundT} AND p.season = {seasonT} "
+                     "ORDER BY p.incident")
+            self.data.execute(query)  # Execute the query
+            self.penalties = self.data.fetchone()  # Fetch the first record of penalties
