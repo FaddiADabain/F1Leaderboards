@@ -37,11 +37,12 @@ pip install matplotlib
 ```
 
 ## How to install and run
-1. Install python 3.11 or newer
-2. Install all the prerequisites in command prompt
-3. Install any python interpreter (VSCode will be used for this installation process)
-4. Unzip the folder to a memorable location
-5. Open VSCode using a new window
-6. Select 'Open Folder...'
-7. Open the unzipped folder once and select the folder that is inside
-8. Press run at the top right of the window (arrow pointing right)
+1. Download python 3.11 or newer
+2. After opening up the .exe for python installation, SELECT THE BOX THAT SAYS 'Add python.exe to PATH', then select 'Install Now'
+3. Install all the prerequisites in command prompt (pip must be the first one to be downloaded to install the rest)
+4. Install any python interpreter (VSCode will be used for this installation process)
+5. Unzip the folder to a memorable location
+6. Open VSCode using a new window
+7. Select 'Open Folder...'
+8. Open the unzipped folder once and select the folder that is inside
+9. Press run at the top right of the window (arrow pointing right)
