@@ -31,7 +31,7 @@ class Standings(ctk.CTkFrame):
         self.scrollable_frame.grid_columnconfigure(2, weight=1)
 
     # Method to load data from the database
-    def load_data(self, table="Drivers' Championship", season=date.today().year):
+    def load_data(self, table="Drivers' Championship", season=2023):
         # Fetch data based on the selected table (Drivers' or Constructors' Championship)
         if table == "Drivers' Championship":
             query = f"SELECT name, points, team FROM drivers WHERE season = {season} ORDER BY points DESC"
