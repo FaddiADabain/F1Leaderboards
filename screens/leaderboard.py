@@ -79,7 +79,7 @@ class Leaderboard(ctk.CTkFrame):
             leaderL.grid(row=index, column=1, sticky="nw", padx=20, pady=10)
             ptsL.grid(row=index, column=2, sticky="e", padx=20, pady=10)
 
-    def load_data(self, race, season=date.today().year):
+    def load_data(self, race, season=2023):
         # Load leaderboard data based on the selected race and season
         # SQL query to fetch race details
         query = ("SELECT r.country, r.track, r.laps, r.season, r.round FROM races r "
