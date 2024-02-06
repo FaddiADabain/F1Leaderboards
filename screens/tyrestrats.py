@@ -100,7 +100,7 @@ class Strategies(ctk.CTkFrame):
         self.fill()
 
     # Load strategy data based on the selected race and season
-    def load_data(self, race, season=date.today().year):
+    def load_data(self, race, season=2023):
         query = (
             f"SELECT r.country, r.track, r.laps, r.season, r.round FROM races r WHERE r.season = {season} AND r.track ="
             "? ORDER BY date DESC")
