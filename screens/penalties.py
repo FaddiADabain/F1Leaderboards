@@ -87,7 +87,7 @@ class Penalties(ctk.CTkFrame):
             self.penalties = self.data.fetchone()
             i += 1
 
-    def load_data(self, race, season=date.today().year):
+    def load_data(self, race, season=2023):
         # Load penalty data based on the selected race and season
         # Execute SQL queries to fetch race details and penalty data
         # Update class attributes with fetched data
